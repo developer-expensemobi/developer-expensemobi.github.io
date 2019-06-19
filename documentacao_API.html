@@ -31,7 +31,487 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-standalone-preset.js"> </script>
 <script>
 window.onload = function() {
-  var spec = {"swagger": "2.0", "info": {"description": "Documenta\u00e7\u00e3o das APIs de integra\u00e7\u00e3o da ExpenseMobi", "version": "1.0.0", "title": "Swagger APIs Expense Mobi", "contact": {"email": "suporte@expensemobi.com.br"}, "license": {"name": "Apache 2.0", "url": "http://www.apache.org/licenses/LICENSE-2.0.html"}}, "host": "hm-wsv.expensemobi.com.br", "basePath": "/ExpenseMobilityFinal", "tags": [{"name": "API", "description": "Tudo sobre APIs da Expense Mobi", "externalDocs": {"description": "Encontre mais em", "url": "https://developer-expensemobi.github.io/index.html"}}, {"name": "Projeto", "description": "Opera\u00e7\u00f5es para projetos"}, {"name": "Relat\u00f3rio", "description": "Opera\u00e7\u00f5es para Relat\u00f3rios"}], "schemes": ["https", "http"], "paths": {"/integracao Criar/Alterar Projeto": {"post": {"tags": ["Projeto"], "summary": "Criar novo projeto (Ordem Interna/PEP)", "description": "", "operationId": "salvarProjeto", "produces": ["application/json"], "parameters": [{"in": "body", "name": "body", "description": "Parametros necess\u00e1rios para cria\u00e7\u00e3o de um projeto", "required": true, "schema": {"$ref": "#/definitions/Projeto"}}], "responses": {"200": {"description": "Opera\u00e7\u00e3o realizada com sucesso", "schema": {"type": "string"}}, "400": {"description": "Projeto inv\u00e1lido"}, "404": {"description": "Centro de Custo n\u00e3o encontrado"}}}}, "/integracao Encerrar Projeto": {"post": {"tags": ["Projeto"], "summary": "Encerrar Projeto (Ordem Interna/PEP)", "description": "", "operationId": "encerrarProjeto", "produces": ["application/json"], "parameters": [{"in": "body", "name": "body", "description": "Parametros necess\u00e1rios para altera\u00e7\u00e3o de um projeto", "required": true, "schema": {"$ref": "#/definitions/ExcluirProjeto"}}], "responses": {"200": {"description": "Opera\u00e7\u00e3o realizada com sucesso", "schema": {"type": "string"}}, "400": {"description": "Projeto inv\u00e1lido"}, "404": {"description": "Centro de Custo ou Projeto n\u00e3o encontrado"}}}}, "/integracao Pagar ou Estornar Despesas": {"post": {"tags": ["Relat\u00f3rio"], "summary": "Realizar Pagamentos ou  Estornar Relat\u00f3rio/Despesas", "description": "Realizar/Estornar Pagamento", "operationId": "pagarEstornarDespesa", "produces": ["application/json"], "parameters": [{"in": "body", "name": "body", "description": "Parametros necess\u00e1rios para pagar ou estornar relat\u00f3rio/despesas", "required": true, "schema": {"$ref": "#/definitions/Pagamento"}}], "responses": {"200": {"description": "Opera\u00e7\u00e3o realizada com sucesso", "schema": {"type": "string"}}, "400": {"description": "Projeto inv\u00e1lido"}, "404": {"description": "Centro de Custo n\u00e3o encontrado"}}}}}, "definitions": {"Projeto": {"type": "object", "required": ["key", "method", "param"], "properties": {"method": {"type": "string", "description": "salvarProjeto"}, "key": {"type": "string", "description": "key fornecida ao desenvolvedor"}, "param": {"type": "object", "required": ["chaveempresa", "codigoprojeto", "tipoprojeto", "descricaoprojeto", "codigoempresa", "codigocentrodecusto"], "properties": {"chaveempresa": {"type": "string", "example": "Chave da empresa fornecida ao desenvolvedor"}, "codigoprojeto": {"type": "string", "example": "Projeto 1"}, "tipoprojeto": {"type": "integer", "format": "int64", "description": "Tipo Projeto", "enum": ["1", "2"], "example": 1}, "descricaoprojeto": {"type": "string", "example": "Projeto 1"}, "codigoempresa": {"type": "string", "example": "Empresa 1"}, "codigocentrodecusto": {"type": "string", "example": "000123456"}, "codigocentro": {"type": "string", "example": "000123456"}, "status": {"type": "string", "example": "Status 1"}}}}}, "ExcluirProjeto": {"type": "object", "required": ["key", "method", "param"], "properties": {"method": {"example": "salvarProjeto", "type": "string"}, "key": {"type": "string", "example": "key fornecida ao desenvolvedor"}, "param": {"type": "object", "required": ["chaveempresa", "codigoprojeto", "tipoprojeto", "descricaoprojeto", "codigoempresa", "datafim"], "properties": {"chaveempresa": {"type": "string", "example": "Chave da empresa fornecida ao desenvolvedor"}, "codigoprojeto": {"type": "string", "example": "Projeto 1"}, "tipoprojeto": {"type": "integer", "format": "int64", "enum": ["1", "2"], "example": 1}, "codigoempresa": {"type": "string", "example": "Empresa 1"}, "datafim": {"type": "integer", "format": "int64", "example": 1546300800}, "status": {"type": "string", "example": "Status 1"}}}}}, "Pagamento": {"type": "object", "required": ["key", "method", "param"], "properties": {"method": {"type": "string", "example": "pagarEstornarDespesa"}, "key": {"type": "string", "example": "key fornecida ao desenvolvedor"}, "param": {"type": "object", "required": ["chaveempresa", "codigoprojeto"], "properties": {"chaveempresa": {"type": "string", "example": "Chave da empresa fornecida ao desenvolvedor"}, "array": {"type": "array", "items": {"type": "object", "required": ["tiporetorno", "codigorelatoriodespesa", "tipolancamento", "codigolancamento", "sapcodigodocumento", "dataretorno"], "properties": {"tiporetorno": {"type": "string"}, "codigorelatoriodespesa": {"type": "integer", "format": "int64"}, "tipolancamento": {"type": "integer", "format": "int64", "description": "Tipo Projeto", "enum": ["1", "2"]}, "codigolancamento": {"type": "integer", "format": "int64"}, "sapcodigodocumento": {"type": "string"}, "dataretorno": {"type": "integer", "format": "int64"}}}, "example": [{"tiporetorno": "PAGAMENTO", "codigorelatoriodespesa": 12345678, "tipolancamento": 1, "codigolancamento": 123456, "sapcodigodocumento": "123456-DA", "example": 1546300800}, {"tiporetorno": "ESTORNO", "codigorelatoriodespesa": 12345678, "tipolancamento": 1, "codigolancamento": 123456, "sapcodigodocumento": "123456-DA", "example": 1546300800}]}}}}}}};
+  var spec = {
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentação das APIs de integração da ExpenseMobi",
+    "version": "1.0.0",
+    "title": "Swagger APIs Expense Mobi",
+    "contact": {
+      "email": "suporte@expensemobi.com.br"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "hm-wsv.expensemobi.com.br",
+  "basePath": "/ExpenseMobilityFinal",
+  "tags": [
+    {
+      "name": "API",
+      "description": "Tudo sobre APIs da Expense Mobi",
+      "externalDocs": {
+        "description": "Encontre mais em",
+        "url": "https://developer-expensemobi.github.io/index.html"
+      }
+    },
+    {
+      "name": "Projeto",
+      "description": "Operações para projetos"
+    },
+    {
+      "name": "Relatório",
+      "description": "Operações para Relatórios"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/integracao Criar/Alterar Projeto": {
+      "post": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Criar novo projeto (Ordem Interna/PEP)",
+        "description": "",
+        "operationId": "salvarProjeto",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parametros necessários para criação de um projeto",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Projeto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Projeto inválido"
+          },
+          "404": {
+            "description": "Centro de Custo não encontrado"
+          }
+        }
+      }
+    },
+    "/integracao Encerrar Projeto": {
+      "post": {
+        "tags": [
+          "Projeto"
+        ],
+        "summary": "Encerrar Projeto (Ordem Interna/PEP)",
+        "description": "",
+        "operationId": "encerrarProjeto",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parametros necessários para alteração de um projeto",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExcluirProjeto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Projeto inválido"
+          },
+          "404": {
+            "description": "Centro de Custo ou Projeto não encontrado"
+          }
+        }
+      }
+    },
+    "/integracao Pagar ou Estornar Despesas": {
+      "post": {
+        "tags": [
+          "Relatório"
+        ],
+        "summary": "Realizar Pagamentos ou  Estornar Relatório/Despesas",
+        "description": "Realizar/Estornar Pagamento",
+        "operationId": "pagarEstornarDespesa",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parametros necessários para pagar ou estornar relatório/despesas",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pagamento"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Projeto inválido"
+          },
+          "404": {
+            "description": "Centro de Custo não encontrado"
+          }
+        }
+      }
+    },
+    "/notificarintegracao": {
+      "post": {
+        "tags": [
+          "Notificação de Integração"
+        ],
+        "summary": "Criar novo projeto (Ordem Interna/PEP)",
+        "description": "",
+        "operationId": "notificarintegracao",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parametros necessários para criação de um projeto",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/notificacao"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Projeto inválido"
+          },
+          "404": {
+            "description": "Centro de Custo não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Projeto": {
+      "type": "object",
+      "required": [
+        "key",
+        "method",
+        "param"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "salvarProjeto"
+        },
+        "key": {
+          "type": "string",
+          "description": "key fornecida ao desenvolvedor"
+        },
+        "param": {
+          "type": "object",
+          "required": [
+            "chaveempresa",
+            "codigoprojeto",
+            "tipoprojeto",
+            "descricaoprojeto",
+            "codigoempresa",
+            "codigocentrodecusto"
+          ],
+          "properties": {
+            "chaveempresa": {
+              "type": "string",
+              "example": "Chave da empresa fornecida ao desenvolvedor"
+            },
+            "codigoprojeto": {
+              "type": "string",
+              "example": "Projeto 1"
+            },
+            "tipoprojeto": {
+              "type": "integer",
+              "format": "int64",
+              "description": "Tipo Projeto",
+              "enum": [
+                "1",
+                "2"
+              ],
+              "example": 1
+            },
+            "descricaoprojeto": {
+              "type": "string",
+              "example": "Projeto 1"
+            },
+            "codigoempresa": {
+              "type": "string",
+              "example": "Empresa 1"
+            },
+            "codigocentrodecusto": {
+              "type": "string",
+              "example": "000123456"
+            },
+            "codigocentro": {
+              "type": "string",
+              "example": "000123456"
+            },
+            "status": {
+              "type": "string",
+              "example": "Status 1"
+            }
+          }
+        }
+      }
+    },
+    "ExcluirProjeto": {
+      "type": "object",
+      "required": [
+        "key",
+        "method",
+        "param"
+      ],
+      "properties": {
+        "method": {
+          "example": "salvarProjeto",
+          "type": "string"
+        },
+        "key": {
+          "type": "string",
+          "example": "key fornecida ao desenvolvedor"
+        },
+        "param": {
+          "type": "object",
+          "required": [
+            "chaveempresa",
+            "codigoprojeto",
+            "tipoprojeto",
+            "descricaoprojeto",
+            "codigoempresa",
+            "datafim"
+          ],
+          "properties": {
+            "chaveempresa": {
+              "type": "string",
+              "example": "Chave da empresa fornecida ao desenvolvedor"
+            },
+            "codigoprojeto": {
+              "type": "string",
+              "example": "Projeto 1"
+            },
+            "tipoprojeto": {
+              "type": "integer",
+              "format": "int64",
+              "enum": [
+                "1",
+                "2"
+              ],
+              "example": 1
+            },
+            "codigoempresa": {
+              "type": "string",
+              "example": "Empresa 1"
+            },
+            "datafim": {
+              "type": "integer",
+              "format": "int64",
+              "example": 1546300800
+            },
+            "status": {
+              "type": "string",
+              "example": "Status 1"
+            }
+          }
+        }
+      }
+    },
+    "Pagamento": {
+      "type": "object",
+      "required": [
+        "key",
+        "method",
+        "param"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "example": "pagarEstornarDespesa"
+        },
+        "key": {
+          "type": "string",
+          "example": "key fornecida ao desenvolvedor"
+        },
+        "param": {
+          "type": "object",
+          "required": [
+            "chaveempresa",
+            "codigoprojeto"
+          ],
+          "properties": {
+            "chaveempresa": {
+              "type": "string",
+              "example": "Chave da empresa fornecida ao desenvolvedor"
+            },
+            "array": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "tiporetorno",
+                  "codigorelatoriodespesa",
+                  "tipolancamento",
+                  "codigolancamento",
+                  "sapcodigodocumento",
+                  "dataretorno"
+                ],
+                "properties": {
+                  "tiporetorno": {
+                    "type": "string"
+                  },
+                  "codigorelatoriodespesa": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "tipolancamento": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Tipo Projeto",
+                    "enum": [
+                      "1",
+                      "2"
+                    ]
+                  },
+                  "codigolancamento": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "sapcodigodocumento": {
+                    "type": "string"
+                  },
+                  "dataretorno": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                }
+              },
+              "example": [
+                {
+                  "tiporetorno": "PAGAMENTO",
+                  "codigorelatoriodespesa": 12345678,
+                  "tipolancamento": 1,
+                  "codigolancamento": 123456,
+                  "sapcodigodocumento": "123456-DA",
+                  "example": 1546300800
+                },
+                {
+                  "tiporetorno": "ESTORNO",
+                  "codigorelatoriodespesa": 12345678,
+                  "tipolancamento": 1,
+                  "codigolancamento": 123456,
+                  "sapcodigodocumento": "123456-DA",
+                  "example": 1546300800
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "notificacao": {
+      "type": "object",
+      "required": [
+        "key",
+        "method",
+        "param"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "salvarProjeto"
+        },
+        "key": {
+          "type": "string",
+          "description": "key fornecida ao desenvolvedor"
+        },
+        "param": {
+          "type": "object",
+          "required": [
+            "chaveempresa",
+            "codigoprojeto",
+            "tipoprojeto",
+            "descricaoprojeto",
+            "codigoempresa",
+            "codigocentrodecusto"
+          ],
+          "properties": {
+            "chaveempresa": {
+              "type": "string",
+              "example": "Chave da empresa fornecida ao desenvolvedor"
+            },
+            "despesa": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "idDespesa": {
+                    "type": "number",
+                    "example": 1234
+                  },
+                  "dataIntegracao": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 1546300800
+                  },
+                  "observacao": {
+                    "type": "string",
+                    "example": "usuario123"
+                  },
+                  "codigoIntegracao": {
+                    "type": "string",
+                    "example": "integracao123"
+                  },
+                  "codigoRetorno": {
+                    "type": "string",
+                    "example": "user123"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
   // Build a system
   const ui = SwaggerUIBundle({
     spec: spec,
