@@ -63,33 +63,16 @@ window.onload = function() {
         ],
         "parameters": [
           {
-            "name": "pagina",
-            "in": "query",
-            "description": "Página a ser retornada",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+            "$ref": "#/components/parameters/AtivoParam"
           },
           {
-            "name": "quantidade",
-            "in": "query",
-            "description": "Quantidade de itens por página (Padrão: 25, Máximo: 100)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
+            "$ref": "#/components/parameters/PaginaParam"
           },
           {
-            "name": "ordenar",
-            "in": "query",
-            "description": "Ordenar por algum dos campos de usuário",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
           }
         ],
         "responses": {
@@ -111,6 +94,12 @@ window.onload = function() {
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "default": {
             "description": "Erro",
@@ -146,10 +135,16 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UsuarioId"
+                  "$ref": "#/components/schemas/Id"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
           },
           "default": {
             "description": "Erro",
@@ -164,7 +159,7 @@ window.onload = function() {
         }
       }
     },
-    "/usuarios/{id}": {
+    "/usuarios/{idUsuario}": {
       "get": {
         "summary": "Buscar Usuário por Id",
         "operationId": "buscarUsuario",
@@ -173,7 +168,7 @@ window.onload = function() {
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -193,6 +188,12 @@ window.onload = function() {
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "default": {
             "description": "Erro",
@@ -214,7 +215,7 @@ window.onload = function() {
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -240,10 +241,19 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UsuarioId"
+                  "$ref": "#/components/schemas/Id"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
           },
           "default": {
             "description": "Erro",
@@ -265,7 +275,7 @@ window.onload = function() {
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -278,6 +288,12 @@ window.onload = function() {
         "responses": {
           "204": {
             "description": "Usuário desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "default": {
             "description": "Erro",
@@ -292,16 +308,16 @@ window.onload = function() {
         }
       }
     },
-    "/usuarios/{id}/cargo": {
+    "/usuarios/{idUsuario}/cargos": {
       "get": {
         "summary": "Buscar Cargo do Usuário por Id de Usuário",
         "operationId": "buscarCargoDeUsuario",
         "tags": [
-          "cargo"
+          "usuario"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -322,6 +338,9 @@ window.onload = function() {
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
           "default": {
             "description": "Erro",
             "content": {
@@ -335,16 +354,16 @@ window.onload = function() {
         }
       }
     },
-    "/usuarios/{id}/departamento": {
+    "/usuarios/{idUsuario}/departamentos": {
       "get": {
         "summary": "Buscar Departamento do Usuário por Id de Usuário",
         "operationId": "buscarDepartamentoDeUsuario",
         "tags": [
-          "departamento"
+          "usuario"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -365,6 +384,9 @@ window.onload = function() {
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
           "default": {
             "description": "Erro",
             "content": {
@@ -378,16 +400,16 @@ window.onload = function() {
         }
       }
     },
-    "/usuarios/{id}/perfis-acesso": {
+    "/usuarios/{idUsuario}/perfis-acesso": {
       "get": {
         "summary": "Buscar Perfis de Acesso do Usuário por Id de Usuário",
         "operationId": "buscarPerfisAcessoDeUsuario",
         "tags": [
-          "perfil-acesso"
+          "usuario"
         ],
         "parameters": [
           {
-            "name": "id",
+            "name": "idUsuario",
             "in": "path",
             "description": "Id do Usuário",
             "required": true,
@@ -403,10 +425,877 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/PerfilAcesso"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/{idUsuario}/perfis-acesso/{idPerfilAcesso}": {
+      "put": {
+        "summary": "Incluir Perfil de Acesso ao Usuário",
+        "operationId": "incluirPerfisAcessoAoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idPerfilAcesso",
+            "in": "path",
+            "description": "Id do Perfil de Acesso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil de Acesso associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Perfil de Acesso do Usuário",
+        "operationId": "removerPerfisAcessoDoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idPerfilAcesso",
+            "in": "path",
+            "description": "Id do Perfil de Acesso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil de Acesso associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cargos": {
+      "get": {
+        "summary": "Buscar Cargos da Empresa",
+        "operationId": "listarCargos",
+        "tags": [
+          "cargo"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Cargos encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/cargos?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cargos"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Cargo",
+        "operationId": "criarCargo",
+        "tags": [
+          "cargo"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CargoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cargos/{idCargo}": {
+      "get": {
+        "summary": "Buscar Cargo por Id",
+        "operationId": "buscarCargo",
+        "tags": [
+          "cargo"
+        ],
+        "parameters": [
+          {
+            "name": "idCargo",
+            "in": "path",
+            "description": "Id do Cargo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cargo encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cargo"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Cargo",
+        "operationId": "atualizarCargo",
+        "tags": [
+          "cargo"
+        ],
+        "parameters": [
+          {
+            "name": "idCargo",
+            "in": "path",
+            "description": "Id do Cargo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CargoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cargo atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Cargo",
+        "operationId": "desativarCargo",
+        "tags": [
+          "cargo"
+        ],
+        "parameters": [
+          {
+            "name": "idCargo",
+            "in": "path",
+            "description": "Id do Cargo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cargo desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/departamentos": {
+      "get": {
+        "summary": "Buscar Departamentos da Empresa",
+        "operationId": "buscarDepartamentos",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Departamentos encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/departamentos?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Departamentos"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Departamento",
+        "operationId": "criarDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartamentoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/departamentos/{idDepartamento}": {
+      "get": {
+        "summary": "Buscar Departamento por Id",
+        "operationId": "buscarDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Departamento encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Departamento"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Departamento",
+        "operationId": "atualizarDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartamentoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Departamento atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Departamento",
+        "operationId": "desativarDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Departamento desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/perfis-acesso": {
+      "get": {
+        "summary": "Buscar Perfis de Acesso da Empresa",
+        "operationId": "buscarPerfisAcesso",
+        "tags": [
+          "perfil-acesso"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Perfis de Acesso encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/perfis-acesso?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/PerfisAcesso"
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Perfil de Acesso",
+        "operationId": "criarPerfilAcesso",
+        "tags": [
+          "perfil-acesso"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerfilAcessoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/perfis-acesso/{idPerfilAcesso}": {
+      "get": {
+        "summary": "Buscar Perfil de Acesso por Id",
+        "operationId": "buscarPerfilAcesso",
+        "tags": [
+          "perfil-acesso"
+        ],
+        "parameters": [
+          {
+            "name": "idPerfilAcesso",
+            "in": "path",
+            "description": "Id do Perfil de Acesso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil de Acesso encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilAcesso"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Perfil de Acesso",
+        "operationId": "atualizarPerfilAcesso",
+        "tags": [
+          "perfil-acesso"
+        ],
+        "parameters": [
+          {
+            "name": "idPerfilAcesso",
+            "in": "path",
+            "description": "Id do Perfil de Acesso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerfilAcesso"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Perfil de Acesso atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Perfil de Acesso",
+        "operationId": "desativarPerfilAcesso",
+        "tags": [
+          "perfil-acesso"
+        ],
+        "parameters": [
+          {
+            "name": "idPerfilAcesso",
+            "in": "path",
+            "description": "Id do Perfil de Acesso",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Perfil de Acesso desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "default": {
             "description": "Erro",
@@ -430,8 +1319,77 @@ window.onload = function() {
         "name": "x-api-key"
       }
     },
+    "responses": {
+      "Unauthorized": {
+        "description": "Acesso não autorizado!"
+      },
+      "NotFound": {
+        "description": "Entidade não encontrada!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "description": "Entidade inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "AtivoParam": {
+        "in": "query",
+        "name": "ativo",
+        "description": "Status da Entidade",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "PaginaParam": {
+        "in": "query",
+        "name": "pagina",
+        "description": "Página a ser retornada",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      "QuantidadeParam": {
+        "name": "quantidade",
+        "in": "query",
+        "description": "Quantidade de itens por página (Padrão: 25, Máximo: 100)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 25
+        }
+      },
+      "OrdenacaoParam": {
+        "name": "ordenacao",
+        "in": "query",
+        "description": "Ordenar por algum dos campos da entidade",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "ativo"
+        }
+      }
+    },
     "schemas": {
-      "UsuarioId": {
+      "Id": {
         "type": "object",
         "required": [
           "id"
@@ -463,16 +1421,12 @@ window.onload = function() {
           }
         }
       },
-      "Cargo": {
+      "CargoBody": {
         "type": "object",
         "required": [
-          "id"
+          "descricao"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "descricao": {
             "type": "string",
             "example": "Gerente"
@@ -483,16 +1437,28 @@ window.onload = function() {
           }
         }
       },
-      "Departamento": {
+      "Cargo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CargoBody"
+          }
+        ]
+      },
+      "Cargos": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Cargo"
+        }
+      },
+      "DepartamentoBody": {
         "type": "object",
         "required": [
-          "id"
+          "descricao"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "descricao": {
             "type": "string",
             "example": "Vendas"
@@ -503,10 +1469,26 @@ window.onload = function() {
           }
         }
       },
-      "PerfilAcesso": {
+      "Departamento": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/DepartamentoBody"
+          }
+        ]
+      },
+      "Departamentos": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Departamento"
+        }
+      },
+      "PerfilAcessoResumido": {
         "type": "object",
         "required": [
-          "id"
+          "descricao"
         ],
         "properties": {
           "id": {
@@ -518,6 +1500,87 @@ window.onload = function() {
             "example": "Administrativo"
           }
         }
+      },
+      "PerfilAcessoBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PerfilAcessoResumido"
+          },
+          {
+            "type": "object",
+            "required": [
+              "descricao"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "descricao": {
+                "type": "string",
+                "example": "Administrativo"
+              },
+              "visualizaTodosUsuariosEmpresa": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaTodosUsuariosGrupoEmpresa": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaUsuariosGrupoAprovacao": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaTodosUsuariosGrupoAprovacaoGrupoEmpresa": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaSomenteProprioUsuario": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaUsuariosDepartamento": {
+                "type": "boolean",
+                "example": false
+              },
+              "visualizaUsuariosCentroCusto": {
+                "type": "boolean",
+                "example": false
+              },
+              "permiteAprovacao": {
+                "type": "boolean",
+                "example": false
+              },
+              "permiteRealizarPagamento": {
+                "type": "boolean",
+                "example": false
+              },
+              "permiteLancarDespesaParaOutroUsuario": {
+                "type": "boolean",
+                "example": false
+              },
+              "permiteRevogacao": {
+                "type": "boolean",
+                "example": false
+              },
+              "permiteVisualizarHorarioDespesa": {
+                "type": "boolean",
+                "example": false
+              }
+            }
+          }
+        ]
+      },
+      "PerfilAcesso": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/PerfilAcessoBody"
+          }
+        ]
       },
       "PerfisAcesso": {
         "type": "array",
@@ -583,14 +1646,14 @@ window.onload = function() {
             "$ref": "#/components/schemas/Departamento"
           },
           "perfisAcesso": {
-            "$ref": "#/components/schemas/PerfisAcesso"
+            "$ref": "#/components/schemas/PerfilAcessoResumido"
           }
         }
       },
       "Usuario": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/UsuarioId"
+            "$ref": "#/components/schemas/Id"
           },
           {
             "$ref": "#/components/schemas/UsuarioBody"
