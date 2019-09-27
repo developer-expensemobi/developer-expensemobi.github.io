@@ -354,6 +354,108 @@ window.onload = function() {
         }
       }
     },
+    "/usuarios/{idUsuario}/cargos/{idCargo}": {
+      "put": {
+        "summary": "Incluir Cargo ao Usuário",
+        "operationId": "incluirCargoAoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCargo",
+            "in": "path",
+            "description": "Id do Cargo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cargo associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Cargo do Usuário",
+        "operationId": "removerCargoDoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCargo",
+            "in": "path",
+            "description": "Id do Cargo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cargo associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/usuarios/{idUsuario}/departamentos": {
       "get": {
         "summary": "Buscar Departamento do Usuário por Id de Usuário",
@@ -386,6 +488,108 @@ window.onload = function() {
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/usuarios/{idUsuario}/departamentos/{idDepartamento}": {
+      "put": {
+        "summary": "Incluir Departamento ao Usuário",
+        "operationId": "incluirDepartamentoAoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Departamento associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Departamento do Usuário",
+        "operationId": "removerDepartamentoDoUsuario",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuário",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Departamento associado ao Usuário!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "default": {
             "description": "Erro",
@@ -1637,16 +1841,19 @@ window.onload = function() {
             "example": "1970-01-01"
           },
           "empresa": {
-            "$ref": "#/components/schemas/Empresa"
+            "$ref": "#/components/schemas/Id"
           },
           "cargo": {
-            "$ref": "#/components/schemas/Cargo"
+            "$ref": "#/components/schemas/Id"
           },
           "departamento": {
-            "$ref": "#/components/schemas/Departamento"
+            "$ref": "#/components/schemas/Id"
           },
           "perfisAcesso": {
-            "$ref": "#/components/schemas/PerfilAcessoResumido"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Id"
+            }
           }
         }
       },
