@@ -54,6 +54,66 @@ window.onload = function() {
     }
   ],
   "paths": {
+    "/empresas": {
+      "get": {
+        "summary": "Listar Empresas",
+        "operationId": "listarEmpresas",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Uma lista de empresas paginada!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/empresas?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empresas"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/usuarios": {
       "get": {
         "summary": "Listar Usuários",
@@ -62,6 +122,9 @@ window.onload = function() {
           "usuario"
         ],
         "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
           {
             "$ref": "#/components/parameters/AtivoParam"
           },
@@ -333,7 +396,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cargo"
+                  "$ref": "#/components/schemas/Cargos"
                 }
               }
             }
@@ -435,7 +498,7 @@ window.onload = function() {
         ],
         "responses": {
           "200": {
-            "description": "Cargo associado ao Usuário!"
+            "description": "Cargo desassociado do Usuário!"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -481,7 +544,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Departamento"
+                  "$ref": "#/components/schemas/Departamentos"
                 }
               }
             }
@@ -583,7 +646,7 @@ window.onload = function() {
         ],
         "responses": {
           "200": {
-            "description": "Departamento associado ao Usuário!"
+            "description": "Departamento desassociado do Usuário!"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -629,7 +692,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PerfilAcesso"
+                  "$ref": "#/components/schemas/PerfisAcesso"
                 }
               }
             }
@@ -731,7 +794,7 @@ window.onload = function() {
         ],
         "responses": {
           "200": {
-            "description": "Perfil de Acesso associado ao Usuário!"
+            "description": "Perfil de Acesso desassociado do Usuário!"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
@@ -1260,6 +1323,645 @@ window.onload = function() {
         }
       }
     },
+    "/departamentos/{idDepartamento}/centros-de-custo": {
+      "get": {
+        "summary": "Buscar Centro de Custo do Departamento por Id do Departamento",
+        "operationId": "buscarCentroDeCustoDoDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Departamento encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CentrosDeCusto"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/departamentos/{idDepartamento}/centros-de-custo/{idCentroDeCusto}": {
+      "put": {
+        "summary": "Incluir Centro de Custo ao Departamento",
+        "operationId": "incluirCentroDeCustoAoDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do Centro de Custo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Centro de Custo associado ao Departamento!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Centro de Custo do Departamento",
+        "operationId": "removerCentroDeCustoDoDepartamento",
+        "tags": [
+          "departamento"
+        ],
+        "parameters": [
+          {
+            "name": "idDepartamento",
+            "in": "path",
+            "description": "Id do Departamento",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do Centro de Custo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Departamento desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/centros-de-custo": {
+      "get": {
+        "summary": "Buscar Centros de Custo da Empresa",
+        "operationId": "buscarCentros de Custo",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Centros de Custo encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/centros-de-custo?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CentrosDeCusto"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar CentroDeCusto",
+        "operationId": "criarCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CentroDeCustoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/centros-de-custo/{idCentroDeCusto}": {
+      "get": {
+        "summary": "Buscar CentroDeCusto por Id",
+        "operationId": "buscarCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do CentroDeCusto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CentroDeCusto encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CentroDeCusto"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar CentroDeCusto",
+        "operationId": "atualizarCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do CentroDeCusto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CentroDeCustoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "CentroDeCusto atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar CentroDeCusto",
+        "operationId": "desativarCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do CentroDeCusto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Centro de Custo desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/centros-de-custo/{idCentroDeCusto}/categorias-conta-contabil": {
+      "get": {
+        "summary": "Buscar Categorias de Conta Contábil do Centro de Custo por Id do Centro de Custo",
+        "operationId": "buscarCategoriaContaContabilDoCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do Centro de Custo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria de Conta Contábil encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriaContaContabil"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/centros-de-custo/{idCentroDeCusto}/categorias-conta-contabil/{idCategoriaContaContabil}": {
+      "put": {
+        "summary": "Incluir Categorias de Conta Contábil ao Centro de Custo",
+        "operationId": "incluirCategoriaContaContabilAoCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do Centro de Custo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCategoriaContaContabil",
+            "in": "path",
+            "description": "Id da Categoria de Contas Contábil",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria de Conta Contábil associado ao Centro de Custo!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Categoria de Conta Contábil do Centro de Custo",
+        "operationId": "removerCategoriaContaContabilDoCentroDeCusto",
+        "tags": [
+          "centro-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do Centro de Custo",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCategoriaContaContabil",
+            "in": "path",
+            "description": "Id da Categoria de Contas Contábil",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Categoria de Conta Contábil desassociado do Centro de Custo!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categorias-conta-contabil": {
+      "get": {
+        "summary": "Buscar Categorias de Conta Contábil da Empresa",
+        "operationId": "buscarCategoriaContaContabil",
+        "tags": [
+          "categoria-conta-contabil"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Categorias de Conta Contábil encontradas!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/categorias-conta-contabil?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriasContaContabil"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/perfis-acesso": {
       "get": {
         "summary": "Buscar Perfis de Acesso da Empresa",
@@ -1549,6 +2251,17 @@ window.onload = function() {
       }
     },
     "parameters": {
+      "IdEmpresaParam": {
+        "in": "query",
+        "name": "id-empresa",
+        "description": "Empresa da Entidade",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
       "AtivoParam": {
         "in": "query",
         "name": "ativo",
@@ -1625,10 +2338,30 @@ window.onload = function() {
           }
         }
       },
+      "Empresas": {
+        "type": "array",
+        "items": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Empresa"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "matriz": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          ]
+        }
+      },
       "CargoBody": {
         "type": "object",
         "required": [
-          "descricao"
+          "descricao",
+          "empresa"
         ],
         "properties": {
           "descricao": {
@@ -1638,6 +2371,9 @@ window.onload = function() {
           "ativo": {
             "type": "boolean",
             "example": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
           }
         }
       },
@@ -1648,6 +2384,14 @@ window.onload = function() {
           },
           {
             "$ref": "#/components/schemas/CargoBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empresa": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
           }
         ]
       },
@@ -1657,10 +2401,140 @@ window.onload = function() {
           "$ref": "#/components/schemas/Cargo"
         }
       },
+      "CategoriaContaContabilResumido": {
+        "type": "object",
+        "required": [
+          "descricao",
+          "empresa"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Categoria Conta Contabil da Empresa X"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "CCC-X"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "CategoriaContaContabilBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CategoriaContaContabilResumido"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empresa": {
+                "$ref": "#/components/schemas/Id"
+              }
+            }
+          }
+        ]
+      },
+      "CategoriaContaContabil": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CategoriaContaContabilBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empresa": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
+          }
+        ]
+      },
+      "CategoriasContaContabil": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CategoriaContaContabil"
+        }
+      },
+      "CentroDeCustoResumido": {
+        "type": "object",
+        "required": [
+          "nome",
+          "empresa"
+        ],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "CR-X"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Centro de Custo da Empresa X"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "CentroDeCustoBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CentroDeCustoResumido"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "categoriaContaContabil": {
+                "$ref": "#/components/schemas/Id"
+              },
+              "empresa": {
+                "$ref": "#/components/schemas/Id"
+              }
+            }
+          }
+        ]
+      },
+      "CentroDeCusto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CentroDeCustoBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "categoriaContaContabil": {
+                "$ref": "#/components/schemas/CategoriaContaContabilResumido"
+              },
+              "empresa": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
+          }
+        ]
+      },
+      "CentrosDeCusto": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CentroDeCusto"
+        }
+      },
       "DepartamentoBody": {
         "type": "object",
         "required": [
-          "descricao"
+          "descricao",
+          "empresa"
         ],
         "properties": {
           "descricao": {
@@ -1670,6 +2544,12 @@ window.onload = function() {
           "ativo": {
             "type": "boolean",
             "example": true
+          },
+          "centroDeCusto": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
           }
         }
       },
@@ -1680,6 +2560,17 @@ window.onload = function() {
           },
           {
             "$ref": "#/components/schemas/DepartamentoBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "centroDeCusto": {
+                "$ref": "#/components/schemas/CentroDeCustoResumido"
+              },
+              "empresa": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
           }
         ]
       },
@@ -1713,7 +2604,8 @@ window.onload = function() {
           {
             "type": "object",
             "required": [
-              "descricao"
+              "descricao",
+              "empresa"
             ],
             "properties": {
               "id": {
@@ -1723,6 +2615,13 @@ window.onload = function() {
               "descricao": {
                 "type": "string",
                 "example": "Administrativo"
+              },
+              "ativo": {
+                "type": "boolean",
+                "example": true
+              },
+              "empresa": {
+                "$ref": "#/components/schemas/Id"
               },
               "visualizaTodosUsuariosEmpresa": {
                 "type": "boolean",
@@ -1798,7 +2697,8 @@ window.onload = function() {
           "nome",
           "sobrenome",
           "email",
-          "senha"
+          "senha",
+          "empresa"
         ],
         "properties": {
           "nome": {
