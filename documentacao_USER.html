@@ -54,6 +54,38 @@ window.onload = function() {
     }
   ],
   "paths": {
+    "/api-key/generate": {
+      "post": {
+        "summary": "Api key para criação de Empresas",
+        "description": "Serviço para a geração de uma chave de acesso (***api-key***) para a criação\nde Empresa e Filiais, onde a mesma chave deverá ser usada para ambas.\n\n\\nObs.: ***Api-key de Empresas == Api-key de Filial***",
+        "operationId": "gerarKeyEmpresa",
+        "tags": [
+          "api-key"
+        ],
+        "responses": {
+          "201": {
+            "description": "api-key gerada com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKey"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/empresas": {
       "get": {
         "summary": "Listar Empresas",
@@ -64,15 +96,6 @@ window.onload = function() {
         "parameters": [
           {
             "$ref": "#/components/parameters/AtivoParam"
-          },
-          {
-            "$ref": "#/components/parameters/PaginaParam"
-          },
-          {
-            "$ref": "#/components/parameters/QuantidadeParam"
-          },
-          {
-            "$ref": "#/components/parameters/OrdenacaoParam"
           }
         ],
         "responses": {
@@ -91,6 +114,263 @@ window.onload = function() {
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Empresa",
+        "operationId": "criarEmpresa",
+        "tags": [
+          "empresa"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmpresaBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Empresa criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/empresas/{idEmpresa}": {
+      "get": {
+        "summary": "Buscar Empresa por Id",
+        "operationId": "buscarEmpresa",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "name": "idEmpresa",
+            "in": "path",
+            "description": "Id do Empresa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Empresa encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmpresaResumida"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Empresa",
+        "operationId": "atualizarEmpresa",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "name": "idEmpresa",
+            "in": "path",
+            "description": "Id do Empresa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmpresaBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Empresa atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Empresa",
+        "operationId": "desativarEmpresa",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "name": "idEmpresa",
+            "in": "path",
+            "description": "Id do Empresa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empresa desativado com sucesso!"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/empresas/{idEmpresa}/filiais/{idFilial}": {
+      "put": {
+        "summary": "Incluir Filial à Matriz",
+        "operationId": "incluirFilialAMatriz",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "name": "idEmpresa",
+            "in": "path",
+            "description": "Id da Empresa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idFilial",
+            "in": "path",
+            "description": "Id da Filial",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filial associada à Matriz com sucesso!"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Filial da matriz",
+        "operationId": "removerFilialDaMatriz",
+        "tags": [
+          "empresa"
+        ],
+        "parameters": [
+          {
+            "name": "idEmpresa",
+            "in": "path",
+            "description": "Id da Empresa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "idFilial",
+            "in": "path",
+            "description": "Id da Filial",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Filial dessacociada com sucesso!"
           },
           "default": {
             "description": "Erro",
@@ -2263,6 +2543,16 @@ window.onload = function() {
           "example": true
         }
       },
+      "MatrizParam": {
+        "in": "query",
+        "name": "matriz",
+        "description": "Empresa matriz?",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
       "PaginaParam": {
         "in": "query",
         "name": "pagina",
@@ -2309,25 +2599,151 @@ window.onload = function() {
           }
         }
       },
-      "Empresa": {
+      "ApiKey": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "EmpresaBody": {
         "type": "object",
         "required": [
-          "id"
+          "cnpj",
+          "razaoSocial",
+          "email"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "cnpj": {
+            "type": "string",
+            "example": "99.999.999/0001-99"
+          },
+          "razaoSocial": {
+            "type": "string",
+            "example": "Teste Corp."
           },
           "apelido": {
             "type": "string",
-            "example": "Teste Corp."
+            "example": "Teste Test"
+          },
+          "matriz": {
+            "type": "boolean",
+            "example": true
+          },
+          "endereco": {
+            "type": "string",
+            "example": "Rua Teste da Silva"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int32",
+            "example": 123
+          },
+          "complemento": {
+            "type": "string",
+            "example": "99B"
+          },
+          "bairro": {
+            "type": "string",
+            "example": "Vila Teste"
+          },
+          "cep": {
+            "type": "string",
+            "example": "099999-99"
+          },
+          "cidade": {
+            "type": "string",
+            "example": "São Paulo"
+          },
+          "estado": {
+            "type": "string",
+            "example": "SP",
+            "maxLength": 2
+          },
+          "siglaPais": {
+            "type": "string",
+            "example": "BR",
+            "maxLength": 2
+          },
+          "telefone": {
+            "type": "string",
+            "example": "(11) 99999-9999"
+          },
+          "email": {
+            "type": "string",
+            "example": "adm@test.com.br"
+          },
+          "contato": {
+            "type": "string",
+            "example": "João Ninguém"
           },
           "ativo": {
             "type": "boolean",
             "example": true
+          },
+          "codigo": {
+            "type": "string",
+            "example": "0000001"
+          },
+          "informacaoAdicional": {
+            "type": "string",
+            "example": "Qualquer informação extra"
           }
         }
+      },
+      "Filial": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/EmpresaBody"
+          }
+        ]
+      },
+      "EmpresaResumida": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Filial"
+          }
+        ]
+      },
+      "Empresa": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EmpresaResumida"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "grupoEmpresa": {
+                "type": "object",
+                "properties": {
+                  "apelido": {
+                    "type": "string",
+                    "example": "Teste Corp."
+                  },
+                  "ativo": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "filiais": {
+                    "type": "array",
+                    "items": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Filial"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       },
       "Empresas": {
         "type": "array",
@@ -2335,15 +2751,6 @@ window.onload = function() {
           "allOf": [
             {
               "$ref": "#/components/schemas/Empresa"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "matriz": {
-                  "type": "boolean",
-                  "example": true
-                }
-              }
             }
           ]
         }
@@ -2475,9 +2882,6 @@ window.onload = function() {
       },
       "CentroDeCustoBody": {
         "allOf": [
-          {
-            "$ref": "#/components/schemas/Id"
-          },
           {
             "$ref": "#/components/schemas/CentroDeCustoResumido"
           },
