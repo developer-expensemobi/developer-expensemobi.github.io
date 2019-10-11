@@ -2497,29 +2497,11 @@ window.onload = function() {
         "parameters": [
           {
             "$ref": "#/components/parameters/AtivoParam"
-          },
-          {
-            "$ref": "#/components/parameters/PaginaParam"
-          },
-          {
-            "$ref": "#/components/parameters/QuantidadeParam"
-          },
-          {
-            "$ref": "#/components/parameters/OrdenacaoParam"
           }
         ],
         "responses": {
-          "206": {
+          "200": {
             "description": "Recursos encontradas!",
-            "headers": {
-              "x-next": {
-                "description": "Link para a próxima página",
-                "schema": {
-                  "type": "string",
-                  "example": "http://usuario.expensemobi.com.br/v1/recursos?pagina=1&quantidade=10"
-                }
-              }
-            },
             "content": {
               "application/json": {
                 "schema": {
