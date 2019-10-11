@@ -2486,6 +2486,66 @@ window.onload = function() {
           }
         }
       }
+    },
+    "/recursos": {
+      "get": {
+        "summary": "Buscar Recursos para o Perfil de Acesso",
+        "operationId": "buscarRecursos",
+        "tags": [
+          "recurso"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Recursos encontradas!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/recursos?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Recursos"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2808,7 +2868,7 @@ window.onload = function() {
         "properties": {
           "descricao": {
             "type": "string",
-            "example": "Categoria Conta Contabil da Empresa X"
+            "example": "Categoria Conta Contabil da Empresa"
           },
           "codigo": {
             "type": "string",
@@ -2842,14 +2902,6 @@ window.onload = function() {
           },
           {
             "$ref": "#/components/schemas/CategoriaContaContabilBody"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "empresa": {
-                "$ref": "#/components/schemas/Empresa"
-              }
-            }
           }
         ]
       },
@@ -2975,6 +3027,42 @@ window.onload = function() {
           "$ref": "#/components/schemas/Departamento"
         }
       },
+      "RecursoBody": {
+        "type": "object",
+        "required": [
+          "descricao"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Criação de Teste"
+          },
+          "sigla": {
+            "type": "string",
+            "example": "CT",
+            "maxLength": 3
+          },
+          "ativo": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Recurso": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/RecursoBody"
+          }
+        ]
+      },
+      "Recursos": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Recurso"
+        }
+      },
       "PerfilAcessoResumido": {
         "type": "object",
         "required": [
@@ -3065,6 +3153,12 @@ window.onload = function() {
               "permiteVisualizarHorarioDespesa": {
                 "type": "boolean",
                 "example": false
+              },
+              "recursos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Id"
+                }
               }
             }
           }
@@ -3077,6 +3171,17 @@ window.onload = function() {
           },
           {
             "$ref": "#/components/schemas/PerfilAcessoBody"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recursos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Recurso"
+                }
+              }
+            }
           }
         ]
       },
