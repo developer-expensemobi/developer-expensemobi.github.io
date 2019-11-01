@@ -493,6 +493,55 @@ window.onload = function() {
         }
       }
     },
+    "/usuarios/email/{email}": {
+      "get": {
+        "summary": "Buscar Usuário por E-mail",
+        "operationId": "buscarUsuarioPorEmail",
+        "tags": [
+          "usuario"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-mail do Usuário",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "mail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuario"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/usuarios/{idUsuario}": {
       "get": {
         "summary": "Buscar Usuário por Id",
