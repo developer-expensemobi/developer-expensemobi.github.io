@@ -1,0 +1,1110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Mobi User Api</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui.css" >
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+    body {
+      margin:0;
+      background: #fafaff;
+    }
+  </style>
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+  var spec = {
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Expense Mobi - Tipos Despesas e Contas Contábeis"
+  },
+  "servers": [
+    {
+      "url": "http://{account-api}.elb.amazonaws.com",
+      "description": "Produção",
+      "variables": {
+        "user-api": {
+          "default": "expense-mobi-account-api-205598576.us-east-1"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/tipos-despesas": {
+      "get": {
+        "summary": "Buscar Tipos Despesas da Empresa",
+        "operationId": "listarTiposDespesas",
+        "tags": [
+          "tipos-despesas"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
+          {
+            "$ref": "#/components/parameters/IdContaContabilParam"
+          },
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Tipos Despesas encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://account.expensemobi.com.br/v1/tipos-despesas?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TiposDespesas"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Tipo Despesa",
+        "operationId": "criarTipoDespesa",
+        "tags": [
+          "tipos-despesas"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoDespesaBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo Despesa criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tipos-despesas/{idTipoDespesa}": {
+      "get": {
+        "summary": "Buscar Tipo Despesa por Id",
+        "operationId": "buscarTipoDespesa",
+        "tags": [
+          "tipos-despesas"
+        ],
+        "parameters": [
+          {
+            "name": "idTipoDespesa",
+            "in": "path",
+            "description": "Id do Tipo Despesa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo Despesa encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TipoDespesa"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Tipo Despesa",
+        "operationId": "atualizarTipoDespesa",
+        "tags": [
+          "tipos-despesas"
+        ],
+        "parameters": [
+          {
+            "name": "idTipoDespesa",
+            "in": "path",
+            "description": "Id do Tipo Despesa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoDespesaBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo Despesa atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Tipo Despesa",
+        "operationId": "desativarTipoDespesa",
+        "tags": [
+          "tipos-despesas"
+        ],
+        "parameters": [
+          {
+            "name": "idTipoDespesa",
+            "in": "path",
+            "description": "Id do Tipo Despesa",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Tipo Despesa desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categorias-tipo-despesa": {
+      "get": {
+        "summary": "Buscar Categorias de Tipo Despesa da Empresa",
+        "operationId": "buscarCategoriaTipoDespesa",
+        "tags": [
+          "categorias-tipo-despesa"
+        ],
+        "responses": {
+          "200": {
+            "description": "Categorias de Tipo Despesa encontradas!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriasTipoDespesa"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tipos-documento": {
+      "get": {
+        "summary": "Buscar Tipo de Documento de Tipo Despesa da Empresa",
+        "operationId": "buscarTiposDocumento",
+        "tags": [
+          "tipos-documento"
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipos de Documento encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TiposDocumento"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contas-contabeis": {
+      "get": {
+        "summary": "Buscar Contas Contábeis da Empresa",
+        "operationId": "listarContasContabeis",
+        "tags": [
+          "contas-contabeis"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
+          {
+            "$ref": "#/components/parameters/IdContaContabilParam"
+          },
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Contas Contábeis encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://account.expensemobi.com.br/v1/contas-contabeis?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContasContabeis"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Conta Contábil",
+        "operationId": "criarContaContabil",
+        "tags": [
+          "contas-contabeis"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContaContabilBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Conta Contábil criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contas-contabeis/{idContaContabil}": {
+      "get": {
+        "summary": "Buscar Conta Contábil por Id",
+        "operationId": "buscarContaContabil",
+        "tags": [
+          "contas-contabeis"
+        ],
+        "parameters": [
+          {
+            "name": "idContaContabil",
+            "in": "path",
+            "description": "Id do Conta Contábil",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conta Contábil encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContaContabil"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Conta Contábil",
+        "operationId": "atualizarContaContabil",
+        "tags": [
+          "contas-contabeis"
+        ],
+        "parameters": [
+          {
+            "name": "idContaContabil",
+            "in": "path",
+            "description": "Id do Conta Contábil",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContaContabilBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conta Contábil atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Conta Contábil",
+        "operationId": "desativarContaContabil",
+        "tags": [
+          "contas-contabeis"
+        ],
+        "parameters": [
+          {
+            "name": "idContaContabil",
+            "in": "path",
+            "description": "Id do Conta Contábil",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Conta Contábil desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categorias-conta-contabil": {
+      "get": {
+        "summary": "Buscar Categorias de Conta Contábil da Empresa",
+        "operationId": "buscarCategoriaContaContabil",
+        "tags": [
+          "categorias-conta-contabil"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Categorias de Conta Contábil encontradas!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://usuario.expensemobi.com.br/v1/categorias-conta-contabil?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriasContaContabil"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Acesso não autorizado!"
+      },
+      "NotFound": {
+        "description": "Entidade não encontrada!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "description": "Entidade inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "IdEmpresaParam": {
+        "in": "query",
+        "name": "id-empresa",
+        "description": "Empresa da Entidade",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
+      "IdContaContabilParam": {
+        "in": "query",
+        "name": "id-conta-contabil",
+        "description": "Conta Contábil da Entidade",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
+      "AtivoParam": {
+        "in": "query",
+        "name": "ativo",
+        "description": "Status da Entidade",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "MatrizParam": {
+        "in": "query",
+        "name": "matriz",
+        "description": "Empresa matriz?",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "PaginaParam": {
+        "in": "query",
+        "name": "pagina",
+        "description": "Página a ser retornada",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      "QuantidadeParam": {
+        "name": "quantidade",
+        "in": "query",
+        "description": "Quantidade de itens por página (Padrão: 25, Máximo: 100)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 25
+        }
+      },
+      "OrdenacaoParam": {
+        "name": "ordenacao",
+        "in": "query",
+        "description": "Ordenar por algum dos campos da entidade",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "ativo"
+        }
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "TipoDespesaBody": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Tipo Despesa da Empresa"
+          },
+          "identificacao": {
+            "type": "string",
+            "enum": [
+              "E",
+              "K",
+              "N",
+              "O",
+              "T"
+            ],
+            "example": "N"
+          },
+          "icone": {
+            "type": "string",
+            "enum": [
+              "ALIMENTACAO",
+              "COMBUSTIVEL",
+              "ESTACIONAMENTO",
+              "HOTEL",
+              "KM",
+              "PEDAGIO",
+              "TAXI",
+              "AVIAO",
+              "CARRO",
+              "CARTAO",
+              "DEFAULT",
+              "TIMESHEET",
+              "TRANSPORTE",
+              "EXTRATO",
+              "BPP"
+            ],
+            "example": "DEFAULT"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "contaContabil": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "tipoDespesaAntigo": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "categoria": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "tipoDocumento": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "TipoDespesa": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/TipoDespesaBody"
+          }
+        ]
+      },
+      "TiposDespesas": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/TipoDespesa"
+        }
+      },
+      "CategoriaTipoDespesaBody": {
+        "type": "object",
+        "required": [
+          "descricao",
+          "empresa"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Categorias Tipo Despesa da Empresa"
+          },
+          "identificador": {
+            "type": "string",
+            "example": "TD",
+            "maxLength": 2
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "CategoriasTipoDespesa": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CategoriaTipoDespesaBody"
+          }
+        ]
+      },
+      "TipoDocumentoBody": {
+        "type": "object",
+        "required": [
+          "descricao",
+          "codigo",
+          "empresa"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Categorias Tipo Despesa da Empresa"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "Categorias Tipo Despesa da Empresa"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "obrigaComprovante": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "TiposDocumento": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/TipoDocumentoBody"
+          }
+        ]
+      },
+      "ContaContabilBody": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Descrição da Conta Contábil da Empresa"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "Código da Conta Contábil da Empresa"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "codigoAdicional": {
+            "type": "string",
+            "example": "Código Adicional da Conta Contábil da Empresa"
+          },
+          "contaContabilAntiga": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "categoria": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "ContaContabil": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/ContaContabilBody"
+          }
+        ]
+      },
+      "ContasContabeis": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContaContabil"
+        }
+      },
+      "CategoriaContaContabilResumido": {
+        "type": "object",
+        "required": [
+          "descricao",
+          "empresa"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Categoria Conta Contabil da Empresa"
+          },
+          "codigo": {
+            "type": "string",
+            "example": "CCC-X"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "CategoriaContaContabilBody": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CategoriaContaContabilResumido"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empresa": {
+                "$ref": "#/components/schemas/Id"
+              }
+            }
+          }
+        ]
+      },
+      "CategoriasContaContabil": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CategoriaContaContabilBody"
+          }
+        ]
+      },
+      "Erro": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "mensagem"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mensagem": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+};
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "BaseLayout"
+  })
+  window.ui = ui
+}
+</script>
+</body>
+</html>
