@@ -1,0 +1,1582 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Mobi User Api</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui.css" >
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+    body {
+      margin:0;
+      background: #fafaff;
+    }
+  </style>
+</head>
+<body>
+<div id="swagger-ui"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.2.2/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+  var spec = {
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Expense Mobi - Workflow de Aprovação"
+  },
+  "servers": [
+    {
+      "url": "http://{workflow-api}.elb.amazonaws.com",
+      "description": "Produção",
+      "variables": {
+        "workflow-api": {
+          "default": "expense-mobi-workflow-api-856110957.us-east-1"
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/grupos-aprovacao": {
+      "get": {
+        "summary": "Buscar Grupos de Aprovação da Empresa",
+        "operationId": "buscarGrupos de Aprovação",
+        "tags": [
+          "grupos-aprovacao"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdEmpresaParam"
+          },
+          {
+            "$ref": "#/components/parameters/AtivoParam"
+          },
+          {
+            "$ref": "#/components/parameters/PaginaParam"
+          },
+          {
+            "$ref": "#/components/parameters/QuantidadeParam"
+          },
+          {
+            "$ref": "#/components/parameters/OrdenacaoParam"
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Grupos de Aprovação encontrados!",
+            "headers": {
+              "x-next": {
+                "description": "Link para a próxima página",
+                "schema": {
+                  "type": "string",
+                  "example": "http://workflow.expensemobi.com.br/v1/grupos-aprovacao?pagina=1&quantidade=10"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GruposAprovacao"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Grupos de Aprovação",
+        "operationId": "criarGrupoAprovacao",
+        "tags": [
+          "grupos-aprovacao"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrupoAprovacaoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Grupos de Aprovação criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}": {
+      "get": {
+        "summary": "Buscar Grupo de Aprovação por Id",
+        "operationId": "buscarGrupoAprovacao",
+        "tags": [
+          "grupos-aprovacao"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo de Aprovação encontrado!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrupoAprovacao"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar Grupo de Aprovacao",
+        "operationId": "atualizarGrupoAprovacao",
+        "tags": [
+          "grupos-aprovacao"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrupoAprovacaoBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Grupo de Aprovação atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Desativar Grupo de Aprovacao",
+        "operationId": "desativarGrupoAprovacao",
+        "tags": [
+          "grupos-aprovacao"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do GrupoAprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Grupo de Aprovação desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/usuarios": {
+      "get": {
+        "summary": "Buscar Usuários do Grupo de Aprovação",
+        "operationId": "listarGrupoAprovacaoUsuarios",
+        "tags": [
+          "usuários"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuários do Grupo de Aprovação encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuarios"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/usuarios/{idUsuario}": {
+      "put": {
+        "summary": "Incluir Usuário ao Grupo de Aprovação",
+        "operationId": "incluirUsuarioAoGrupoAprovacao",
+        "tags": [
+          "usuários"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuario",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário incluído ao Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Usuário do Grupo de Aprovação",
+        "operationId": "removerUsuarioDoGrupoAprovacao",
+        "tags": [
+          "usuários"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuario",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário removido do Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/centros-de-custo": {
+      "get": {
+        "summary": "Buscar Centros de Custo do Grupo de Aprovação",
+        "operationId": "listarGrupoAprovacaoCentrosDeCusto",
+        "tags": [
+          "centros-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Centros de Custo do Grupo de Aprovação encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CentrosDeCusto"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/centros-de-custo/{idCentroDeCusto}": {
+      "put": {
+        "summary": "Incluir Centro de Custo ao Grupo de Aprovação",
+        "operationId": "incluirCentroDeCustoAoGrupoAprovacao",
+        "tags": [
+          "centros-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do CentroDeCusto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário incluído ao Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Centro de Custo do Grupo de Aprovação",
+        "operationId": "removerCentroDeCustoDoGrupoAprovacao",
+        "tags": [
+          "centros-de-custo"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idCentroDeCusto",
+            "in": "path",
+            "description": "Id do CentroDeCusto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Centro de Custo removido do Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/projetos": {
+      "get": {
+        "deprecated": true,
+        "summary": "Buscar Projetos do Grupo de Aprovação",
+        "operationId": "listarGrupoAprovacaoProjetos",
+        "tags": [
+          "projetos"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projetos do Grupo de Aprovação encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Projetos"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/projetos/{idProjeto}": {
+      "put": {
+        "deprecated": true,
+        "summary": "Incluir Projeto ao Grupo de Aprovação",
+        "operationId": "incluirProjetoAoGrupoAprovacao",
+        "tags": [
+          "projetos"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idProjeto",
+            "in": "path",
+            "description": "Id do Projeto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto incluído ao Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "deprecated": true,
+        "summary": "Remover Projeto do Grupo de Aprovação",
+        "operationId": "removerProjetoDoGrupoAprovacao",
+        "tags": [
+          "projetos"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idProjeto",
+            "in": "path",
+            "description": "Id do Projeto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto removido do Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/niveis": {
+      "get": {
+        "summary": "Listar Níveis do Grupos de Aprovação",
+        "operationId": "listarGrupoAprovacaoNiveis",
+        "tags": [
+          "níveis"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Níveis do Grupos de Aprovação encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Niveis"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar Nível do Grupos de Aprovação",
+        "operationId": "criarGrupoAprovacaoNivel",
+        "tags": [
+          "níveis"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NivelBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Nível do Grupos de Aprovação criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/niveis/{idNivel}": {
+      "put": {
+        "summary": "Atualizar Nível do Grupo de Aprovacao",
+        "operationId": "atualizarGrupoAprovacaoNivel",
+        "tags": [
+          "níveis"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idNivel",
+            "in": "path",
+            "description": "Id do Nível do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Nivel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Grupo de Aprovação atualizado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Id"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover nível do Grupo de Aprovacao",
+        "operationId": "deletarGrupoAprovacao",
+        "tags": [
+          "níveis"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do GrupoAprovacao",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idNivel",
+            "in": "path",
+            "description": "Id do Nível do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Nível do Grupo de Aprovação desativado com sucesso!"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/niveis/{idNivel}/aprovadores": {
+      "get": {
+        "summary": "Buscar Aprovadores do Nível do Grupo de Aprovação",
+        "operationId": "listarGrupoAprovacaoNivelAprovadores",
+        "tags": [
+          "aprovadores"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idNivel",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aprovadores do Nível do Grupo de Aprovação encontrados!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuarios"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/grupos-aprovacao/{idGrupoAprovacao}/niveis/{idNivel}/aprovadores/{idUsuario}": {
+      "put": {
+        "summary": "Incluir Aprovador do Nível ao Grupo de Aprovação",
+        "operationId": "incluirAprovadorAoGrupoAprovacaoNivel",
+        "tags": [
+          "aprovadores"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idNivel",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuario que possui permissões de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aprovador do Nível incluído ao Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remover Aprovador do Nível do Grupo de Aprovação",
+        "operationId": "removerAprovadorDoGrupoAprovacaoNivel",
+        "tags": [
+          "aprovadores"
+        ],
+        "parameters": [
+          {
+            "name": "idGrupoAprovacao",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idNivel",
+            "in": "path",
+            "description": "Id do Grupo de Aprovação",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "idUsuario",
+            "in": "path",
+            "description": "Id do Usuario",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aprovador do Nível removido do Grupo de Aprovação!"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "default": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Erro"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Acesso não autorizado!"
+      },
+      "BadRequest": {
+        "description": "Mensagem especificando o erro!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Entidade não encontrada!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      },
+      "UnprocessableEntity": {
+        "description": "Entidade inválida",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Erro"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "IdEmpresaParam": {
+        "in": "query",
+        "name": "id-empresa",
+        "description": "Empresa da Entidade",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
+        }
+      },
+      "AtivoParam": {
+        "in": "query",
+        "name": "ativo",
+        "description": "Status da Entidade",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "MatrizParam": {
+        "in": "query",
+        "name": "matriz",
+        "description": "Empresa matriz?",
+        "required": false,
+        "schema": {
+          "type": "boolean",
+          "example": true
+        }
+      },
+      "PaginaParam": {
+        "in": "query",
+        "name": "pagina",
+        "description": "Página a ser retornada",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 0
+        }
+      },
+      "QuantidadeParam": {
+        "name": "quantidade",
+        "in": "query",
+        "description": "Quantidade de itens por página (Padrão: 25, Máximo: 100)",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32",
+          "example": 25
+        }
+      },
+      "OrdenacaoParam": {
+        "name": "ordenacao",
+        "in": "query",
+        "description": "Ordenar por algum dos campos da entidade",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "ativo"
+        }
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "GrupoAprovacaoBody": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Grupo Aprovação da Empresa"
+          },
+          "aprovacaoPorNivel": {
+            "type": "boolean",
+            "example": true
+          },
+          "aprovacaoTodosAprovadores": {
+            "type": "boolean",
+            "example": false
+          },
+          "enviarEmail": {
+            "type": "boolean",
+            "example": true
+          },
+          "aprovacaoDespesas": {
+            "type": "boolean",
+            "example": true
+          },
+          "aprovacaoAdiantamentos": {
+            "type": "boolean",
+            "example": true
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "GrupoAprovacao": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/GrupoAprovacaoBody"
+          }
+        ]
+      },
+      "GruposAprovacao": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/GrupoAprovacao"
+        }
+      },
+      "CentroDeCustoBody": {
+        "type": "object",
+        "required": [
+          "nome",
+          "empresa"
+        ],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "CR-X"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Centro de Custo da Empresa X"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "CentroDeCusto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/CentroDeCustoBody"
+          }
+        ]
+      },
+      "CentrosDeCusto": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CentroDeCusto"
+        }
+      },
+      "UsuarioBody": {
+        "type": "object",
+        "required": [
+          "nome",
+          "sobrenome",
+          "email"
+        ],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "João"
+          },
+          "sobrenome": {
+            "type": "string",
+            "example": "Ninguém"
+          },
+          "codigo": {
+            "type": "string",
+            "example": 83
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "teste@corp.com"
+          },
+          "cpf": {
+            "type": "string",
+            "example": "123456789000"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "Usuario": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/UsuarioBody"
+          }
+        ]
+      },
+      "Usuarios": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Usuario"
+        }
+      },
+      "ProjetoBody": {
+        "type": "object",
+        "required": [
+          "empresa"
+        ],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "example": "Centro de Custo da Empresa X"
+          },
+          "ativo": {
+            "type": "boolean",
+            "example": true
+          },
+          "empresa": {
+            "$ref": "#/components/schemas/Id"
+          }
+        }
+      },
+      "Projeto": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/ProjetoBody"
+          }
+        ]
+      },
+      "Projetos": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Projeto"
+        }
+      },
+      "NivelBody": {
+        "type": "object",
+        "required": [
+          "nivel"
+        ],
+        "properties": {
+          "nivel": {
+            "type": "integer",
+            "example": 1,
+            "description": "Todo nível criado deve ser ordenado"
+          },
+          "valorMinimo": {
+            "type": "number",
+            "example": 0,
+            "minimum": 0
+          },
+          "valorMaximo": {
+            "type": "number",
+            "example": 1,
+            "minimum": 1
+          }
+        }
+      },
+      "Nivel": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Id"
+          },
+          {
+            "$ref": "#/components/schemas/NivelBody"
+          }
+        ]
+      },
+      "Niveis": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Nivel"
+        }
+      },
+      "Erro": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "mensagem"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mensagem": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+};
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "BaseLayout"
+  })
+  window.ui = ui
+}
+</script>
+</body>
+</html>
