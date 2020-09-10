@@ -217,7 +217,7 @@ window.onload = function() {
           {
             "in": "body",
             "name": "body",
-            "description": "Parametros necessários para criação de um projeto",
+            "description": "Parametros necessários para notificar uma ou mais integrações",
             "required": true,
             "schema": {
               "$ref": "#/definitions/notificacao"
@@ -509,6 +509,7 @@ window.onload = function() {
                 "properties": {
                   "idDespesa": {
                     "type": "number",
+                    "required": true,
                     "example": 1234
                   },
                   "dataIntegracao": {
