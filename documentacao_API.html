@@ -495,8 +495,7 @@ window.onload = function() {
             "tipoprojeto",
             "descricaoprojeto",
             "codigoempresa",
-            "codigocentrodecusto",
-            "idDespesa"
+            "codigocentrodecusto"
           ],
           "properties": {
             "chaveempresa": {
@@ -507,10 +506,14 @@ window.onload = function() {
               "type": "array",
               "items": {
                 "type": "object",
+                "required": [
+                  "idDespesa",
+                  "codigoIntegracao",
+                  "tipoIntegracao"
+                ],
                 "properties": {
                   "idDespesa": {
                     "type": "number",
-                    "required": true,
                     "example": 1234
                   },
                   "dataIntegracao": {
